@@ -2,23 +2,28 @@ name: Build and Release Dist
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9 # la misma que usás localmente
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
@@ -31,8 +36,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          git fetch origin
           git checkout --orphan release
-          git rm -rf .
+          git reset --hard
+          git clean -fdx
+
           cp -r dist/* .
           git add .
           git commit -m "Release build $(date +'%Y-%m-%d %H:%M:%S')"
