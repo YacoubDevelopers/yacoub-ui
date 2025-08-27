@@ -2,8 +2,10 @@ name: Build and Release Dist
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -11,37 +13,53 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9 # la misma que usás localmente
+          version: 9
+          run_install: false
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build package
         run: pnpm build
 
-      - name: Deploy dist to release branch
+      - name: Prepare release branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Guardamos el dist en un tmp
+          mv dist ../dist
 
-          git fetch origin
+          # Cambiamos a la rama release
           git checkout --orphan release
           git reset --hard
           git clean -fdx
 
-          cp -r dist/* .
+          # Copiamos dist al root
+          mv ../dist/* .
+
+          # Creamos un package.json mínimo
+          cat <<EOT > package.json
+          {
+            "name": "yacoub-ui",
+            "version": "0.0.1",
+            "main": "index.es.js",
+            "module": "index.es.js",
+            "types": "index.d.ts",
+            "style": "yacoub-ui.css"
+          }
+          EOT
+
           git add .
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -m "Release build $(date +'%Y-%m-%d %H:%M:%S')"
           git push -f origin release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

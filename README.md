@@ -21,7 +21,7 @@ Este paquete contiene los **componentes base y comunes** de la organización Yac
 Agregá el repo privado como dependencia en tu proyecto:
 
 ```bash
-pnpm add git+ssh://git@github.com:YacoubDevelopers/yacoub-ui.git
+pnpm add yacoub-ui@github:YacoubDevelopers/yacoub-ui#release
 ```
 
 ## 🛠 Uso
