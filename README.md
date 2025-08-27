@@ -23,3 +23,42 @@ Agregá el repo privado como dependencia en tu proyecto:
 ```bash
 pnpm add git+ssh://git@github.com:YacoubDevelopers/yacoub-ui.git
 ```
+
+## 🛠 Uso
+
+Importá los componentes que necesites:
+
+```vue
+<script setup lang="ts">
+import { BaseInput, BaseModal } from 'yacoub-ui'
+</script>
+
+<template>
+  <BaseModal title="Ejemplo">
+    <BaseInput label="Nombre" placeholder="Escribí tu nombre" />
+  </BaseModal>
+</template>
+```
+
+## 📚 Storybook
+
+Podés correr Storybook para ver y probar los componentes en modo aislado:
+
+```bash
+pnpm storybook
+```
+
+## 👨‍💻 Desarrollo
+
+Cloná el repo y corré en modo desarrollo:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Para generar el build de la librería:
+
+```bash
+pnpm build
+```
