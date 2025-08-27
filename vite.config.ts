@@ -14,11 +14,8 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      cleanVueFileName: true,
-      insertTypesEntry: true,
       outDir: 'dist',
-      include: ['src'],
-      copyDtsFiles: true,
+      insertTypesEntry: true,
     }),
     tailwindcss(),
   ],
