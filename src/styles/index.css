@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+@theme {
+  /* Paleta de marca: YACOUB*/
+  --color-brand: #eb7e09;
+  --color-brand-dark: #c96705;
+  --color-brand-light: #f8c383;
+  --color-gray-bg: #f7f8fa;
+
+  /* Tokens semánticos */
+  --color-primary: var(--color-brand);
+  --color-secondary: var(--color-brand-dark);
+  --color-accent: var(--color-brand-light);
+
+  /* Tipografía */
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-info: #0ea5e9;
+  --font-sans: 'Inter', ui-sans-serif, system-ui;
+}
+
+/* Estados de focus */
+input:focus,
+select:focus,
+textarea:focus,
+button[data-headlessui-state]:focus,
+[role='button']:focus {
+  outline: none;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px var(--color-accent) !important;
+}
+
+/* Transiciones */
+input,
+select,
+textarea,
+button {
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* UX */
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+html {
+  scroll-behavior: smooth;
+}

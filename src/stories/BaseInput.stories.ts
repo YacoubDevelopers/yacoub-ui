@@ -1,26 +1,47 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { ref } from 'vue'
 import BaseInput from '../components/BaseInput.vue'
 
 const meta: Meta<typeof BaseInput> = {
-  title: 'Forms/BaseInput',
+  title: 'Base/BaseInput',
   component: BaseInput,
+  tags: ['autodocs'],
+  args: {
+    modelValue: '',
+    label: 'Nombre',
+    placeholder: 'Escribí tu nombre...',
+  },
 }
-
 export default meta
 
-export type Story = StoryObj<typeof BaseInput>
+type Story = StoryObj<typeof BaseInput>
 
-export const Default: Story = {
+export const Default: Story = {}
+
+export const WithError: Story = {
+  args: {
+    error: 'Este campo es obligatorio',
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    modelValue: 'No editable',
+    disabled: true,
+  },
+}
+
+export const Sizes: Story = {
   render: (args) => ({
     components: { BaseInput },
     setup() {
-      const value = ref('')
-      return { args, value }
+      return { args }
     },
-    template: '<BaseInput v-model="value" v-bind="args" />',
+    template: `
+      <div class="space-y-4">
+        <BaseInput v-bind="args" size="sm" label="Chico" placeholder="sm" />
+        <BaseInput v-bind="args" size="md" label="Mediano" placeholder="md" />
+        <BaseInput v-bind="args" size="lg" label="Grande" placeholder="lg" />
+      </div>
+    `,
   }),
-  args: {
-    placeholder: 'Enter text',
-  },
 }
