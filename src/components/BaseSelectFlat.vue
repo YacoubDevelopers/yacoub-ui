@@ -27,7 +27,7 @@
             v-model="search"
             type="text"
             placeholder="Buscar..."
-            class="focus:border-yacoub-orange w-full border-b border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none"
+            class="focus:border-primary w-full border-b border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none"
           />
 
           <!-- Opciones -->
@@ -35,12 +35,12 @@
             v-for="option in filteredOptions"
             :key="option.value"
             :value="option.value"
-            class="hover:bg-yacoub-orange/10 relative cursor-pointer px-3 py-2 transition select-none"
+            class="hover:bg-primary/10 relative cursor-pointer px-3 py-2 transition select-none"
           >
             <span
               :class="[
                 selectedOption?.value === option.value
-                  ? 'text-yacoub-orange font-medium'
+                  ? 'text-primary font-medium'
                   : 'text-gray-800',
                 'block truncate',
               ]"
@@ -50,7 +50,7 @@
 
             <span
               v-if="selectedOption?.value === option.value"
-              class="text-yacoub-orange absolute inset-y-0 right-3 flex items-center"
+              class="text-primary absolute inset-y-0 right-3 flex items-center"
             >
               ✓
             </span>

@@ -1,4 +1,3 @@
-import './styles/index.css'
 import type { App } from 'vue'
 
 import BaseButton from './components/BaseButton.vue'

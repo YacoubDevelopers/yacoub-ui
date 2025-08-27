@@ -33,6 +33,7 @@ jobs:
 
       - name: Prepare release branch
         run: |
+          VERSION=$(node -p "require('./package.json').version")
           # Guardamos el dist en un tmp
           mv dist ../dist
 
@@ -48,11 +49,10 @@ jobs:
           cat <<EOT > package.json
           {
             "name": "yacoub-ui",
-            "version": "0.0.1",
+            "version": "$VERSION",
             "main": "index.es.js",
             "module": "index.es.js",
-            "types": "index.d.ts",
-            "style": "yacoub-ui.css"
+            "types": "index.d.ts"          
           }
           EOT
 
