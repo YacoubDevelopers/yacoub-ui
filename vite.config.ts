@@ -14,8 +14,11 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      outDir: 'dist',
       insertTypesEntry: true,
+      outDir: 'dist',
+      copyDtsFiles: false,
+      cleanVueFileName: true,
+      clearPureImport: false,
     }),
     tailwindcss(),
   ],
@@ -29,6 +32,8 @@ export default defineConfig({
     rollupOptions: {
       external: ['vue', '@headlessui/vue', 'lucide-vue-next', 'tailwindcss'],
       output: {
+        exports: 'named',
+        interop: 'default',
         globals: {
           vue: 'Vue',
           '@headlessui/vue': 'HeadlessUI',

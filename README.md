@@ -1,5 +1,25 @@
-# Vue 3 + TypeScript + Vite
+# yacoub-ui
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+📦 **Librería de componentes Vue 3 reutilizables para la WebApp de Yacoub.**
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Este paquete contiene los **componentes base y comunes** de la organización Yacoub, pensados para mantener consistencia visual y acelerar el desarrollo en múltiples proyectos.
+
+---
+
+## 🚀 Características
+
+- ⚡ Construido con **Vue 3** (`<script setup>`)
+- 🎨 Estilos con **TailwindCSS**
+- 🧩 **Componentes base**: `BaseInput`, `BaseSelect`, `BaseModal`, `BaseResponsiveTable`, etc.
+- 📚 Compatibilidad con **Storybook** para documentación y pruebas visuales
+- 🔒 Distribución como **paquete privado** en GitHub Packages
+
+---
+
+## 📦 Instalación
+
+Agregá el repo privado como dependencia en tu proyecto:
+
+```bash
+pnpm add git+ssh://git@github.com:YacoubDevelopers/yacoub-ui.git
+```

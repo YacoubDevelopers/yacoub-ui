@@ -3,9 +3,11 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import BaseResponsiveTable from '../components/BaseResponsiveTable.vue'
 import { Eye } from 'lucide-vue-next'
 
-const meta: Meta<typeof BaseResponsiveTable> = {
+import type { ConcreteComponent } from 'vue'
+
+const meta: Meta<ConcreteComponent> = {
   title: 'Base/BaseResponsiveTable',
-  component: BaseResponsiveTable,
+  component: BaseResponsiveTable as ConcreteComponent,
   tags: ['autodocs'],
   argTypes: {
     loading: { control: 'boolean' },

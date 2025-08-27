@@ -80,7 +80,7 @@ import { ChevronDown } from 'lucide-vue-next'
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps<{
-  modelValue: string | number | null
+  modelValue: string | number | null | undefined
   label?: string
   placeholder?: string
   options: { value: string | number; label: string }[]
@@ -89,7 +89,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number | null): void
+  (e: 'update:modelValue', value: string | number | null | undefined): void
 }>()
 
 const internalValue = ref(props.modelValue)

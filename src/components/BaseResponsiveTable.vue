@@ -1,28 +1,26 @@
-<!-- components/base/BaseResponsiveTable.vue -->
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Record<string, any>">
 import SkeletonTable from '../components/BaseSkeletonTable.vue'
 
-export interface TableHeader {
-  key: string
+export interface TableHeader<T extends Record<string, any> = Record<string, any>> {
+  key: (keyof T & string) | string
   label: string
   class?: string
 }
 
 defineProps<{
-  headers: TableHeader[]
-  rows: Record<string, any>[]
+  headers: TableHeader<T>[]
+  rows: T[]
   loading?: boolean
   totalCols?: number
   emptyMessage?: string
-  /** Función opcional para formatear valores en las celdas */
-  formatter?: (key: string, value: any, row: any) => string | number | null
+  formatter?: (key: (keyof T & string) | string, value: any, row: T) => string | number | null
 }>()
 
 const emit = defineEmits<{
-  (e: 'rowClick', row: any): void
+  (e: 'rowClick', row: T): void
 }>()
 
-function handleRowClick(row: any) {
+function handleRowClick(row: T) {
   emit('rowClick', row)
 }
 </script>
@@ -44,10 +42,7 @@ function handleRowClick(row: any) {
                 {{ h.label }}
               </th>
               <!-- Slot para header extra (acciones, etc) -->
-              <th
-                v-if="$slots['header-action']"
-                class="px-4 py-3 text-center font-semibold text-gray-700"
-              >
+              <th v-if="$slots['header-action']" class="px-4 py-3 font-semibold text-gray-700">
                 <slot name="header-action" />
               </th>
             </tr>
@@ -64,7 +59,10 @@ function handleRowClick(row: any) {
                 :key="h.key"
                 :class="['px-4 py-2 text-xs text-gray-600', h.class]"
               >
-                {{ formatter ? formatter(h.key, row[h.key], row) : row[h.key] }}
+                <!-- 👇 slot dinámico por columna -->
+                <slot :name="`row-${h.key}`" :row="row">
+                  {{ formatter ? formatter(h.key, row[h.key], row) : row[h.key] }}
+                </slot>
               </td>
               <!-- Slot para acción por fila -->
               <td v-if="$slots['row-action']" class="px-4 py-2 text-center">
@@ -94,7 +92,9 @@ function handleRowClick(row: any) {
       >
         <div v-for="h in headers" :key="h.key" class="mb-1 text-xs text-gray-600">
           <strong>{{ h.label }}:</strong>
-          {{ formatter ? formatter(h.key, row[h.key], row) : row[h.key] }}
+          <slot :name="`row-${h.key}`" :row="row">
+            {{ formatter ? formatter(h.key, row[h.key], row) : row[h.key] }}
+          </slot>
         </div>
         <!-- Slot acción en cards -->
         <div v-if="$slots['card-action']" class="mt-2 text-right">

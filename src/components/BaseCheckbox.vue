@@ -5,7 +5,7 @@ import { Check } from 'lucide-vue-next'
 
 const props = withDefaults(
   defineProps<{
-    modelValue: boolean
+    modelValue: boolean | undefined
     label?: string
     error?: string
     id?: string
