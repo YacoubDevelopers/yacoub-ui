@@ -1,0 +1,7 @@
+{
+  "name": "yacoub-ui",
+  "version": "0.0.1",
+  "main": "index.es.js",
+  "module": "index.es.js",
+  "types": "index.d.ts"          
+}
