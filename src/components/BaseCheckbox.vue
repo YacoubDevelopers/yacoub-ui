@@ -1,4 +1,3 @@
-<!-- BaseCheckbox.vue -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Check } from 'lucide-vue-next'
@@ -11,10 +10,12 @@ const props = withDefaults(
     id?: string
     required?: boolean
     labelPosition?: 'top' | 'right'
+    disabled?: boolean
   }>(),
   {
     modelValue: false,
     labelPosition: 'right',
+    disabled: false,
   }
 )
 
@@ -22,11 +23,15 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
 
-const inputId = computed(() => props.id || `checkbox-${Math.random().toString(36).substring(2, 9)}`)
+const inputId = computed(
+  () => props.id || `checkbox-${Math.random().toString(36).substring(2, 9)}`
+)
 const isLabelTop = computed(() => props.labelPosition === 'top')
 
 function onChange(e: Event) {
-  emit('update:modelValue', (e.target as HTMLInputElement).checked)
+  if (!props.disabled) {
+    emit('update:modelValue', (e.target as HTMLInputElement).checked)
+  }
 }
 </script>
 
@@ -42,18 +47,29 @@ function onChange(e: Event) {
       {{ label }}
     </label>
 
-    <div :class="['flex', isLabelTop ? 'flex-row' : 'items-center gap-2']">
-      <!-- Checkbox -->
-      <label class="relative h-5 w-5 cursor-pointer">
+    <div
+      :class="[
+        'flex',
+        isLabelTop ? 'flex-row' : 'items-center gap-2',
+        disabled ? 'opacity-50 cursor-not-allowed' : ''
+      ]"
+    >
+      <!-- Checkbox custom -->
+      <label class="relative inline-flex items-center cursor-pointer">
         <input
           :id="inputId"
           type="checkbox"
           :checked="modelValue"
-          class="peer sr-only"
+          :disabled="disabled"
           @change="onChange"
+          class="peer absolute h-5 w-5 opacity-0 cursor-pointer"
         />
         <div
-          class="border-primary peer-checked:bg-primary peer-checked:border-primary flex h-full w-full items-center justify-center rounded-sm border-2 transition"
+          class="flex h-5 w-5 items-center justify-center rounded border-2 border-gray-300 
+                transition duration-200 ease-in-out
+                peer-focus:ring-2 peer-focus:ring-primary/40
+                peer-hover:border-primary
+                peer-checked:border-primary peer-checked:bg-primary"
         >
           <Check v-if="modelValue" class="h-3 w-3 text-white" />
         </div>

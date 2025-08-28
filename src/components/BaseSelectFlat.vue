@@ -5,7 +5,8 @@
       {{ label }}
     </label>
 
-    <Listbox v-model="internalValue">
+    <!-- 👇 casteo null -> undefined -->
+    <Listbox v-model="listboxValue">
       <div class="relative">
         <!-- Botón -->
         <ListboxButton
@@ -38,12 +39,10 @@
             class="hover:bg-primary/10 relative cursor-pointer px-3 py-2 transition select-none"
           >
             <span
-              :class="[
-                selectedOption?.value === option.value
-                  ? 'text-primary font-medium'
-                  : 'text-gray-800',
-                'block truncate',
-              ]"
+              :class="[selectedOption?.value === option.value
+                ? 'text-primary font-medium'
+                : 'text-gray-800',
+                'block truncate']"
             >
               {{ option.label }}
             </span>
@@ -92,21 +91,27 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | null | undefined): void
 }>()
 
-const internalValue = ref(props.modelValue)
 const search = ref('')
 
+// 🔑 Interno: usamos undefined para Listbox
+const listboxValue = ref<string | number | undefined>(props.modelValue ?? undefined)
+
+// 🔄 Sync props -> interno
 watch(
   () => props.modelValue,
   val => {
-    internalValue.value = val
+    listboxValue.value = val ?? undefined
   }
 )
 
-watch(internalValue, val => {
-  emit('update:modelValue', val)
+// 🔄 Sync interno -> emitimos null si corresponde
+watch(listboxValue, val => {
+  emit('update:modelValue', val ?? null)
 })
 
-const selectedOption = computed(() => props.options.find(opt => opt.value === internalValue.value))
+const selectedOption = computed(() =>
+  props.options.find(opt => opt.value === listboxValue.value)
+)
 
 const filteredOptions = computed(() => {
   if (!props.searchable || !search.value.trim()) return props.options

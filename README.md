@@ -40,6 +40,17 @@ import { BaseInput, BaseModal } from 'yacoub-ui'
 </template>
 ```
 
+Importá también los estilos base una sola vez (por ejemplo en `main.ts`):
+
+```ts
+import 'yacoub-ui/dist/yacoub-ui.css'
+```
+
+Notas importantes sobre estilos:
+- La librería usa utilidades de Tailwind. Si tu app NO usa Tailwind, importar `yacoub-ui/dist/yacoub-ui.css` es obligatorio para que los componentes se vean bien.
+- Si tu app usa Tailwind, igualmente importá `yacoub-ui/dist/yacoub-ui.css` para cargar los tokens (`@theme`) y ajustes base (fuentes, focus, etc.).
+- Si usás Tailwind y notás utilidades faltantes, asegurate de que tu build incluya las clases usadas por la librería. En Vite + Tailwind v4 normalmente alcanza con el import de arriba; en setups con extracción estricta, podés necesitar safelist o incluir `node_modules/yacoub-ui` en el escaneo.
+
 ## 📚 Storybook
 
 Podés correr Storybook para ver y probar los componentes en modo aislado:

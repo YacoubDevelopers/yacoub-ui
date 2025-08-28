@@ -6,6 +6,10 @@
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "style": "dist/yacoub-ui.css",
+  "sideEffects": [
+    "*.css"
+  ],
   "files": [
     "dist"
   ],

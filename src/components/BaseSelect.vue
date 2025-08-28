@@ -14,7 +14,7 @@
             @click="!disabled && updatePosition()"
             :aria-required="required"
             :class="[
-              'focus:ring-primary focus:border-primary relative w-full cursor-default rounded-lg border bg-white text-left shadow-sm transition duration-200 focus:ring-2 focus:outline-none',
+              'focus:ring-primary focus:border-primary relative w-full cursor-default rounded-lg border bg-white text-left shadow-sm transition duration-200 focus:ring-2 focus:outline-none flex items-center justify-between',
               sizeClass,
               error ? 'border-red-400' : 'border-gray-300',
               disabled
@@ -22,16 +22,16 @@
                 : 'text-gray-700',
             ]"
           >
+            <!-- Texto -->
             <span class="block truncate">
               {{ selectedOption?.label || placeholder || 'Seleccionar opción' }}
             </span>
-            <span
-              class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-            >
-              <ChevronDown class="h-4 w-4" />
-            </span>
+
+            <!-- Flecha a la derecha -->
+            <ChevronDown class="h-4 w-4 shrink-0 text-gray-400 ml-2" />
           </div>
         </ListboxButton>
+
 
         <!-- Opciones flotantes -->
         <teleport to="body">
@@ -43,7 +43,7 @@
               left: `${position.left}px`,
               width: `${position.width}px`,
             }"
-            class="z-50 mt-1 max-h-60 divide-y divide-gray-100 overflow-auto rounded-lg border border-gray-300 bg-white text-sm shadow-lg ring-1 ring-gray-200 focus:outline-none"
+            class="z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-gray-300 bg-white text-sm shadow-lg ring-1 ring-gray-200 focus:outline-none"
           >
             <!-- Buscador -->
             <div v-if="searchable" class="border-b border-gray-200">
@@ -62,19 +62,14 @@
               :key="option.value"
               :value="option.value"
               :disabled="disabled"
-              :class="[
-                'relative cursor-pointer px-4 py-2.5 transition select-none first:rounded-t-lg last:rounded-b-lg',
-                disabled
-                  ? 'cursor-not-allowed bg-gray-50 text-gray-400'
-                  : 'hover:bg-primary/10 text-gray-800',
-              ]"
+              class="hover:bg-primary/10 relative cursor-pointer px-4 py-2.5 transition select-none first:rounded-t-lg last:rounded-b-lg"
             >
               <span
-                :class="[
+                :class="[ 
                   selectedOption?.value === option.value && !disabled
                     ? 'text-primary font-medium'
-                    : '',
-                  'block truncate',
+                    : 'text-gray-800',
+                  'block truncate'
                 ]"
               >
                 {{ option.label }}
@@ -138,17 +133,28 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | null | undefined): void
 }>()
 
-const internalValue = ref(props.modelValue)
+// 🔑 usamos undefined para Listbox
+const internalValue = ref<string | number | undefined>(props.modelValue ?? undefined)
+
 const search = ref('')
 const buttonRef = ref<HTMLDivElement | null>(null)
 
+// 🔄 props -> interno (null → undefined)
 watch(
   () => props.modelValue,
-  val => (internalValue.value = val)
+  val => {
+    internalValue.value = val ?? undefined
+  }
 )
-watch(internalValue, val => emit('update:modelValue', val))
 
-const selectedOption = computed(() => props.options.find(opt => opt.value === internalValue.value))
+// 🔄 interno -> emitimos null si corresponde
+watch(internalValue, val => {
+  emit('update:modelValue', val ?? null)
+})
+
+const selectedOption = computed(() =>
+  props.options.find(opt => opt.value === internalValue.value)
+)
 
 const filteredOptions = computed(() => {
   if (!props.searchable || !search.value.trim()) return props.options

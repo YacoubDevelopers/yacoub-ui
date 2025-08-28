@@ -1,4 +1,8 @@
 import type { App } from 'vue'
+// Importa estilos base (tokens + tailwind)
+// para que los consumidores puedan incluir el CSS
+// y los componentes se vean correctamente.
+import './styles/index.css'
 
 import BaseButton from './components/BaseButton.vue'
 import BaseInput from './components/BaseInput.vue'
